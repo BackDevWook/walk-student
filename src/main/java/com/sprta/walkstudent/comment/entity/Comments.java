@@ -28,9 +28,14 @@ public class Comments extends BaseEntity {
     @JoinColumn(nullable = false)
     private Schedules schedules;
 
-    public Comments(String content, Schedules schedule) {
+    public Comments(String content, Long writerId, Schedules schedule) {
         this.content = content;
+        this.writerId = writerId;
         this.schedules = schedule;
+    }
+
+    public void update(String content) {
+        this.content = content;
     }
 
 }
