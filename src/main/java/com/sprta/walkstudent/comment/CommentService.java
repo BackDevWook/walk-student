@@ -5,6 +5,7 @@ import com.sprta.walkstudent.comment.dto.request.CommentRequestDto;
 import com.sprta.walkstudent.comment.dto.request.CommentUpdateDto;
 import com.sprta.walkstudent.comment.dto.response.CommentResponseDto;
 import com.sprta.walkstudent.comment.entity.Comments;
+import com.sprta.walkstudent.replycomment.dto.response.ReplyCommentResponseDto;
 import com.sprta.walkstudent.schedule.ScheduleRepository;
 import com.sprta.walkstudent.schedule.entity.Schedules;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +36,12 @@ public class CommentService {
         return new CommentResponseDto(
                 comment.getId(),
                 comment.getWriterId(),
-                comment.getContent()
+                comment.getContent(),
+                comment.getReplyComments().stream().map(reply -> new ReplyCommentResponseDto(
+                        reply.getId(),
+                        reply.getWriterId(),
+                        reply.getContent()
+                )).toList()
         );
     }
 
@@ -48,7 +54,12 @@ public class CommentService {
         return schedule.getComments().stream().map(comment -> new CommentResponseDto(
                 comment.getId(),
                 comment.getWriterId(),
-                comment.getContent()
+                comment.getContent(),
+                comment.getReplyComments().stream().map(reply -> new ReplyCommentResponseDto(
+                        reply.getId(),
+                        reply.getWriterId(),
+                        reply.getContent()
+                )).toList()
         )).toList();
     }
 
@@ -63,7 +74,12 @@ public class CommentService {
         return new CommentResponseDto(
                 comment.getId(),
                 comment.getWriterId(),
-                comment.getContent()
+                comment.getContent(),
+                comment.getReplyComments().stream().map(reply -> new ReplyCommentResponseDto(
+                        reply.getId(),
+                        reply.getWriterId(),
+                        reply.getContent()
+                )).toList()
         );
 
     }

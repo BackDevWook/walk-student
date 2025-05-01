@@ -1,5 +1,7 @@
 package com.sprta.walkstudent.schedule;
 
+import com.sprta.walkstudent.comment.dto.response.CommentResponseDto;
+import com.sprta.walkstudent.replycomment.dto.response.ReplyCommentResponseDto;
 import com.sprta.walkstudent.schedule.dto.request.ScheduleRequestDto;
 import com.sprta.walkstudent.schedule.dto.request.ScheduleUpdateDto;
 import com.sprta.walkstudent.schedule.dto.response.ScheduleResponseDto;
@@ -32,7 +34,17 @@ public class ScheduleService {
                 schedule.getId(),
                 schedule.getWriterId(),
                 schedule.getTitle(),
-                schedule.getContent());
+                schedule.getContent(),
+                schedule.getComments().stream().map(comment -> new CommentResponseDto(
+                        comment.getId(),
+                        comment.getWriterId(),
+                        comment.getContent(),
+                        comment.getReplyComments().stream().map(reply -> new ReplyCommentResponseDto(
+                                reply.getId(),
+                                reply.getWriterId(),
+                                reply.getContent()
+                        )).toList()
+                )).toList());
     }
 
     // 2. 전체 일정 조회
@@ -41,12 +53,22 @@ public class ScheduleService {
         Pageable page = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("updatedAt").descending());
         Page<Schedules> schedules = scheduleRepository.findAll(page);
 
-        return schedules.map( s -> new ScheduleResponseDto(
-                s.getId(),
-                s.getWriterId(),
-                s.getTitle(),
-                s.getContent()
-        ));
+        return schedules.map(schedule -> new ScheduleResponseDto(
+                schedule.getId(),
+                schedule.getWriterId(),
+                schedule.getTitle(),
+                schedule.getContent(),
+                schedule.getComments().stream().map(comment -> new CommentResponseDto(
+                        comment.getId(),
+                        comment.getWriterId(),
+                        comment.getContent(),
+                        comment.getReplyComments().stream().map(reply -> new ReplyCommentResponseDto(
+                                reply.getId(),
+                                reply.getWriterId(),
+                                reply.getContent()
+                        )).toList()
+                )).toList())
+        );
     }
 
     // 3. 단일 일정 조회
@@ -59,9 +81,18 @@ public class ScheduleService {
                 schedule.getId(),
                 schedule.getWriterId(),
                 schedule.getTitle(),
-                schedule.getContent()
+                schedule.getContent(),
+                schedule.getComments().stream().map(comment -> new CommentResponseDto(
+                        comment.getId(),
+                        comment.getWriterId(),
+                        comment.getContent(),
+                        comment.getReplyComments().stream().map(reply -> new ReplyCommentResponseDto(
+                                reply.getId(),
+                                reply.getWriterId(),
+                                reply.getContent()
+                        )).toList()
+                )).toList()
         );
-
     }
 
     // 4. 일정 수정
@@ -81,8 +112,19 @@ public class ScheduleService {
                 schedule.getId(),
                 schedule.getWriterId(),
                 schedule.getTitle(),
-                schedule.getContent()
+                schedule.getContent(),
+                schedule.getComments().stream().map(comment -> new CommentResponseDto(
+                        comment.getId(),
+                        comment.getWriterId(),
+                        comment.getContent(),
+                        comment.getReplyComments().stream().map(reply -> new ReplyCommentResponseDto(
+                                reply.getId(),
+                                reply.getWriterId(),
+                                reply.getContent()
+                        )).toList()
+                )).toList()
         );
+
     }
 
     // 5. 일정 삭제
