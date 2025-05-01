@@ -52,5 +52,11 @@ public class Schedules extends BaseEntity {
         this.content = content;
     }
 
+    // 수정용 생성자
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
 
 }
