@@ -10,9 +10,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
@@ -34,6 +36,7 @@ public class ScheduleService {
     }
 
     // 2. 전체 일정 조회
+    @Transactional(readOnly = true)
     public Page<ScheduleResponseDto> getAllSchedules(Pageable pageable) {
         Pageable page = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("updatedAt").descending());
         Page<Schedules> schedules = scheduleRepository.findAll(page);
@@ -47,6 +50,7 @@ public class ScheduleService {
     }
 
     // 3. 단일 일정 조회
+    @Transactional(readOnly = true)
     public ScheduleResponseDto getSchedule(Long id) {
 
         Schedules schedule = scheduleRepository.findById(id).orElseThrow(() -> new RuntimeException("Schedule not found"));

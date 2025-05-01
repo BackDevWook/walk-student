@@ -40,4 +40,8 @@ public class ReplyComments extends BaseEntity {
         this.schedules = schedule;
         this.comments = commnet;
     }
+
+    public void update(String content) {
+        this.content = content;
+    }
 }

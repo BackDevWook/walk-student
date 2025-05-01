@@ -9,9 +9,13 @@ import com.sprta.walkstudent.schedule.ScheduleRepository;
 import com.sprta.walkstudent.schedule.entity.Schedules;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CommentService {
 
     private final CommentRepository commentRepository;
@@ -35,16 +39,17 @@ public class CommentService {
         );
     }
 
-    // 2. 댓글 조회
-    public CommentResponseDto getComment(Long commentId) {
+    // 2. 특성 게시물의 댓글 조회
+    @Transactional(readOnly = true)
+    public List<CommentResponseDto> getComment(Long scheduleId) {
 
-        Comments comment = commentRepository.findById(commentId).orElseThrow(() -> new RuntimeException("Comment not found"));
+        Schedules schedule = scheduleRepository.findById(scheduleId).orElseThrow(() -> new RuntimeException("Schedule not found"));
 
-        return new CommentResponseDto(
+        return schedule.getComments().stream().map(comment -> new CommentResponseDto(
                 comment.getId(),
                 comment.getWriterId(),
                 comment.getContent()
-        );
+        )).toList();
     }
 
     // 3. 댓글 수정
