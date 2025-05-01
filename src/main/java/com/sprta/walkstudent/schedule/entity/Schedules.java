@@ -17,9 +17,21 @@ import java.util.List;
 @Table(name = "schedules")
 public class Schedules extends BaseEntity {
 
+    /**
+     * PK
+     * 제목
+     * 내용
+     * 유저id
+     * 댓글 참조
+     * 대댓글 참조
+     */
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
+    private Long writerId;
 
     @Column(nullable = false, length = 25)
     private String title;
@@ -27,19 +39,17 @@ public class Schedules extends BaseEntity {
     @Column(nullable = false, length = 500)
     private String content;
 
-    @Column(nullable = false)
-    private Long writerId;
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "schedules")
     private List<Comments> comments;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "schedules")
     private List<ReplyComments> replyComments;
 
-    public Schedules(String title, String content, Long writerId) {
+    // 요청을 위한 생성자
+    public Schedules(Long writerId, String title, String content) {
+        this.writerId = writerId;
         this.title = title;
         this.content = content;
-        this.writerId = writerId;
     }
 
 
