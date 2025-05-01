@@ -21,7 +21,7 @@ public class Schedules extends BaseEntity {
      * PK
      * 제목
      * 내용
-     * 유저id
+     * 유저 id
      * 댓글 참조
      * 대댓글 참조
      */
