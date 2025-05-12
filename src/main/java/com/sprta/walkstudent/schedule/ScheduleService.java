@@ -35,16 +35,8 @@ public class ScheduleService {
                 schedule.getWriterId(),
                 schedule.getTitle(),
                 schedule.getContent(),
-                schedule.getComments().stream().map(comment -> new CommentResponseDto(
-                        comment.getId(),
-                        comment.getWriterId(),
-                        comment.getContent(),
-                        comment.getReplyComments().stream().map(reply -> new ReplyCommentResponseDto(
-                                reply.getId(),
-                                reply.getWriterId(),
-                                reply.getContent()
-                        )).toList()
-                )).toList());
+                null // NPE 에러 방지
+                );
     }
 
     // 2. 전체 일정 조회

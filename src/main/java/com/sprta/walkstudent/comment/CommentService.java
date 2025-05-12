@@ -37,11 +37,7 @@ public class CommentService {
                 comment.getId(),
                 comment.getWriterId(),
                 comment.getContent(),
-                comment.getReplyComments().stream().map(reply -> new ReplyCommentResponseDto(
-                        reply.getId(),
-                        reply.getWriterId(),
-                        reply.getContent()
-                )).toList()
+                null // NPE 에러 방지
         );
     }
 
